@@ -10,7 +10,7 @@ namespace Hospital.Models
         public int DoctorId { get; set; }
         public Doctor Doctor { get; set; }
 
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public User User { get; set; }
         
         [DataType(DataType.Date)]

@@ -14,5 +14,6 @@ namespace Hospital.Data
         {
         }
         public DbSet<Doctor> Doctor { get; set; }
+        public DbSet<Hospital.Models.Booking> Booking { get; set; }
     }
 }
