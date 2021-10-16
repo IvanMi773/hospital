@@ -26,8 +26,14 @@ namespace Hospital.Controllers
         // GET: Booking
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Booking.Include(b => b.Doctor);
-            return View(await applicationDbContext.ToListAsync());
+            var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            
+            var userBookings = _context
+                .Booking
+                .Where(booking => booking.UserId == userId)
+                .Include(b => b.Doctor)
+                .ToListAsync();
+            return View(await userBookings);
         }
 
         // GET: Booking/Details/5
