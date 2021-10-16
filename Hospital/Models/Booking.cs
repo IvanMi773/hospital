@@ -13,10 +13,10 @@ namespace Hospital.Models
         public string UserId { get; set; }
         public User User { get; set; }
         
-        [DataType(DataType.Date)]
+        [DataType(DataType.DateTime)]
         public DateTime DateFrom { get; set; }
         
-        [DataType(DataType.Date)]
+        [DataType(DataType.DateTime)]
         public DateTime DateTo { get; set; }
 
         public string Description { get; set; }

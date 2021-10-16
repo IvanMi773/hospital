@@ -70,6 +70,17 @@ namespace Hospital.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,DoctorId,DateFrom,DateTo,Description")] Booking booking)
         {
+            // Todo: send error
+            await foreach (var item in _context.Booking)
+            {
+                if (
+                    booking.DateFrom >= item.DateFrom && booking.DateFrom <= item.DateTo || 
+                    booking.DateTo <= item.DateFrom && booking.DateTo >= item.DateTo
+                )
+                {
+                    return View(booking);
+                }
+            }
             if (ModelState.IsValid)
             {
                 booking.UserId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -78,7 +89,7 @@ namespace Hospital.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DoctorId"] = new SelectList(_context.Doctor, "Id", "Id", booking.DoctorId);
+            
             return View(booking);
         }
 
