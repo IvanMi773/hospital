@@ -9,7 +9,7 @@
 
 <div>
     <h4>Doctor</h4>
-    <hr />
+    <hr/>
     <div class="row">
         <img src="@Model.Avatar" alt="" class="w-25">
     </div>
@@ -71,7 +71,11 @@
         </button>
     </a>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+
+@if (User.IsInRole(UserRole.Admin))
+{
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+        <a asp-action="Index">Back to List</a>
+    </div>
+}

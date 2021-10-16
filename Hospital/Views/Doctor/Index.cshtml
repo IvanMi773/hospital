@@ -17,24 +17,112 @@
     }
 }
 
-<div class="container">
-    <div class="row">
-        @foreach (var doctor in Model)
-        {
-            <div class="col-3 card mb-1">
-                <a href="/Doctor/Details/@doctor.Id">
-                    <img src="@doctor.Avatar" alt="" class="card-img-top">
-                    <div class="card-body">
-                        <p class="card-title">@doctor.LastName @doctor.FirstName @doctor.Surname</p>
-                        
-                        <a href="/booking/create/@doctor.Id">
-                            <button class="btn btn-primary mb-2">
-                                Reserve
-                            </button>
-                        </a>
-                    </div>
-                </a>
-            </div>
-        }
+@if (User.IsInRole(UserRole.User))
+{
+    <div class="container">
+        <div class="row">
+            @foreach (var doctor in Model)
+            {
+                <div class="col-3 card mb-1">
+                    <a href="/Doctor/Details/@doctor.Id">
+                        <img src="@doctor.Avatar" alt="" class="card-img-top">
+                        <div class="card-body">
+                            <p class="card-title">@doctor.LastName @doctor.FirstName @doctor.Surname</p>
+
+                            <a href="/booking/create/@doctor.Id">
+                                <button class="btn btn-primary mb-2">
+                                    Reserve
+                                </button>
+                            </a>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
     </div>
-</div>
+}
+
+@if (User.IsInRole(UserRole.Admin))
+{
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+
+
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FirstName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.LastName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Surname)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CityOfWork)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.PlaceOfWork)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Avatar)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.TypeOfDoctor)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CostOfAdmission)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Experience)
+                        </th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FirstName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.LastName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Surname)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CityOfWork)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PlaceOfWork)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Avatar)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TypeOfDoctor)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CostOfAdmission)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Experience)
+                            </td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}

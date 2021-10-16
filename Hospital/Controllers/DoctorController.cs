@@ -19,13 +19,11 @@ namespace Hospital.Controllers
             _context = context;
         }
 
-        // GET: Doctor
         public async Task<IActionResult> Index()
         {
             return View(await _context.Doctor.ToListAsync());
         }
 
-        // GET: Doctor/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -43,15 +41,11 @@ namespace Hospital.Controllers
             return View(doctor);
         }
 
-        // GET: Doctor/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Doctor/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,Surname,CityOfWork,PlaceOfWork,Avatar,TypeOfDoctor,CostOfAdmission,Experience")] Doctor doctor)
@@ -65,7 +59,6 @@ namespace Hospital.Controllers
             return View(doctor);
         }
 
-        // GET: Doctor/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -81,9 +74,6 @@ namespace Hospital.Controllers
             return View(doctor);
         }
 
-        // POST: Doctor/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,Surname,CityOfWork,PlaceOfWork,Avatar,TypeOfDoctor,CostOfAdmission,Experience")] Doctor doctor)

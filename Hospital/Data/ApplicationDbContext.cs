@@ -4,6 +4,7 @@ using System.Text;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Hospital.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Hospital.Data
 {
@@ -14,6 +15,6 @@ namespace Hospital.Data
         {
         }
         public DbSet<Doctor> Doctor { get; set; }
-        public DbSet<Hospital.Models.Booking> Booking { get; set; }
+        public DbSet<Booking> Booking { get; set; }
     }
 }
