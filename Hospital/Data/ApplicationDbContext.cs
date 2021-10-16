@@ -1,8 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Hospital.Models;
 
 namespace Hospital.Data
 {
@@ -12,5 +13,6 @@ namespace Hospital.Data
             : base(options)
         {
         }
+        public DbSet<Doctor> Doctor { get; set; }
     }
 }
