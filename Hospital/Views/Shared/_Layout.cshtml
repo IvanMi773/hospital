@@ -24,9 +24,12 @@
                     </li>
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Doctor" asp-action="Index">Reserve</a>
-                        </li>
+                        if (User.IsInRole(UserRole.User))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Doctor" asp-action="Index">Reserve</a>
+                            </li>
+                        }
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Booking" asp-action="Index">My Reservations</a>
                         </li>
@@ -37,7 +40,7 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Doctor" asp-action="Index">Doctors</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Booking" asp-action="Index">Bookings</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Booking" asp-action="AdminIndex">Bookings</a>
                             </li>
                         }
                     }

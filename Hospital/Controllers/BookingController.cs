@@ -37,6 +37,12 @@ namespace Hospital.Controllers
             return View(await userBookings);
         }
 
+        public async Task<IActionResult> AdminIndex()
+        {
+            var applicationDbContext = _context.Booking.Include(b => b.Doctor);
+            return View("Index", await applicationDbContext.ToListAsync());
+        }
+
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
