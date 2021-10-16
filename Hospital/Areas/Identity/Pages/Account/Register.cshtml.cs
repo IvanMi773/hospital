@@ -24,17 +24,21 @@ namespace Hospital.Areas.Identity.Pages.Account
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        RoleManager<IdentityRole> _roleManager;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender, 
+            RoleManager<IdentityRole> roleManager
+        )
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _roleManager = roleManager;
         }
 
         [BindProperty] public InputModel Input { get; set; }
@@ -116,10 +120,13 @@ namespace Hospital.Areas.Identity.Pages.Account
                     PlaceOfBorn = Input.PlaceOfBorn,
                     UserName = Input.Email,
                     Email = Input.Email,
-                    UserRole = UserRole.User,
                     PhoneNumber = Input.PhoneNumber
                 };
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
+                
+                await _userManager.AddToRoleAsync(user, UserRole.User);
+                
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");

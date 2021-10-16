@@ -14,7 +14,5 @@ namespace Hospital.Models
         public DateTime DateOfBorn { get; set; }
 
         public string PlaceOfBorn { get; set; }
-
-        public UserRole UserRole { get; set; }
     }
 }

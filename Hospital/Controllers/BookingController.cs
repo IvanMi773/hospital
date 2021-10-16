@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Hospital.Data;
 using Hospital.Models;
+using Humanizer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 
 namespace Hospital.Controllers
@@ -23,7 +25,6 @@ namespace Hospital.Controllers
             _httpContextAccessor = httpContextAccessor;
         }
 
-        // GET: Booking
         public async Task<IActionResult> Index()
         {
             var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -36,7 +37,6 @@ namespace Hospital.Controllers
             return View(await userBookings);
         }
 
-        // GET: Booking/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -55,7 +55,7 @@ namespace Hospital.Controllers
             return View(booking);
         }
 
-        // GET: Booking/Create/{doctorId}
+        [Authorize(Roles = UserRole.User)]
         [HttpGet("/Booking/Create/{doctorId}")]
         public IActionResult Create(int? doctorId)
         {
@@ -63,24 +63,22 @@ namespace Hospital.Controllers
             return View();
         }
 
-        // POST: Booking/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = UserRole.User)]
         public async Task<IActionResult> Create([Bind("Id,DoctorId,DateFrom,DateTo,Description")] Booking booking)
         {
             // Todo: send error
-            await foreach (var item in _context.Booking)
-            {
-                if (
-                    booking.DateFrom >= item.DateFrom && booking.DateFrom <= item.DateTo || 
-                    booking.DateTo <= item.DateFrom && booking.DateTo >= item.DateTo
-                )
-                {
-                    return View(booking);
-                }
-            }
+            // await foreach (var item in _context.Booking)
+            // {
+            //     if (
+            //         booking.DateFrom >= item.DateFrom && booking.DateFrom <= item.DateTo || 
+            //         booking.DateTo <= item.DateFrom && booking.DateTo >= item.DateTo
+            //     )
+            //     {
+            //         return View(booking);
+            //     }
+            // }
             if (ModelState.IsValid)
             {
                 booking.UserId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -93,7 +91,7 @@ namespace Hospital.Controllers
             return View(booking);
         }
 
-        // GET: Booking/Edit/5
+        [Authorize(Roles = UserRole.Admin)]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -110,11 +108,9 @@ namespace Hospital.Controllers
             return View(booking);
         }
 
-        // POST: Booking/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = UserRole.Admin)]
         public async Task<IActionResult> Edit(int id, [Bind("Id,DoctorId,UserId,DateFrom,DateTo,Description")] Booking booking)
         {
             if (id != booking.Id)
@@ -147,6 +143,7 @@ namespace Hospital.Controllers
         }
 
         // GET: Booking/Delete/5
+        [Authorize(Roles = UserRole.Admin)]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -168,6 +165,7 @@ namespace Hospital.Controllers
         // POST: Booking/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = UserRole.Admin)]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var booking = await _context.Booking.FindAsync(id);

@@ -1,9 +1,8 @@
 ﻿namespace Hospital.Models
 {
-    public enum UserRole
+    public static class UserRole
     {
-        Unselected = 0,
-        User = 1,
-        Admin = 2
+        public const string Admin = "Admin";
+        public const string User = "User";
     }
 }
