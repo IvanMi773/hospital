@@ -72,19 +72,30 @@ namespace Hospital.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = UserRole.User)]
-        public async Task<IActionResult> Create([Bind("Id,DoctorId,DateFrom,DateTo,Description")] Booking booking)
+        public async Task<IActionResult> Create([Bind("DoctorId,DateFrom,DateTo,Description")] Booking booking)
         {
+            if (DateTime.Compare(booking.DateFrom, booking.DateTo) > 0)
+            {
+                ViewData["dateErr"] = "Date from is bigger than date to";
+                return View(booking);
+            }
             // Todo: send error
-            // await foreach (var item in _context.Booking)
-            // {
-            //     if (
-            //         booking.DateFrom >= item.DateFrom && booking.DateFrom <= item.DateTo || 
-            //         booking.DateTo <= item.DateFrom && booking.DateTo >= item.DateTo
-            //     )
-            //     {
-            //         return View(booking);
-            //     }
-            // }
+            await foreach (var item in _context.Booking)
+            {
+                if (item.DoctorId == booking.DoctorId)
+                {
+                    if (
+                        DateTime.Compare(booking.DateFrom, item.DateFrom) >= 0 && DateTime.Compare(booking.DateFrom, item.DateTo) <= 0 || 
+                        DateTime.Compare(booking.DateTo, item.DateFrom) <= 0 && DateTime.Compare(booking.DateTo, item.DateTo) >= 0
+                    )
+                    {
+                        Console.WriteLine("booking date from: " + booking.DateFrom + " booking date to " + booking.DateTo);
+                        Console.WriteLine("item date from: " + item.DateFrom + " item date to " + item.DateTo);
+                        ViewData["dateErr"] = "Date between " + booking.DateFrom + " and " + booking.DateTo + " is already booked.";
+                        return View(booking);
+                    }
+                }
+            }
             if (ModelState.IsValid)
             {
                 booking.UserId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;

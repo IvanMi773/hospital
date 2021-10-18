@@ -29,10 +29,10 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Doctor" asp-action="Index">Reserve</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Booking" asp-action="Index">My Reservations</a>
+                            </li>
                         }
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Booking" asp-action="Index">My Reservations</a>
-                        </li>
 
                         if (User.IsInRole(UserRole.Admin))
                         {
